@@ -9,6 +9,7 @@ const RoleWatch = () => {
   if (roleStoreS.isLogin) {
     roleStoreS.setRoutes();
     router.replace(router.options.history.location);
+    console.log(router.getRoutes())
   } else {
     router.push("/login");
   }

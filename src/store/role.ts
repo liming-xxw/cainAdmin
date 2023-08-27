@@ -11,6 +11,7 @@ export interface RoleStoreDto {
   isLogin: Ref<boolean>;
   role: Ref<string[]>;
   routes: Ref<routers[]>;
+  slide: Ref<routers[]>;
   token: Ref<string>;
 }
 
@@ -32,6 +33,7 @@ export const roleStore = defineStore("roleStore", {
     role: ref<string[]>([]),
     routes: ref<routers[]>([]),
     token: ref<string>(""),
+    slide: ref<routers[]>([]),
   }),
 
   actions: {
@@ -60,7 +62,13 @@ export const roleStore = defineStore("roleStore", {
         if (v.component && !v.hasOwnProperty("pageParent")) {
           v.component = pages[v.component] as any;
           routerjs.addRoute(v as any);
-          console.log(routerjs.getRoutes());
+        }
+      });
+
+      thisRoutes.forEach((v: routers) => {
+        if (v.parent) {
+          v.component = pages[v.component as any] as any;
+          routerjs.addRoute(v.parent, v as any);
         }
       });
       //
@@ -72,6 +80,8 @@ export const roleStore = defineStore("roleStore", {
           }
         });
       });
+
+      this.slide = useRoutes;
       // 直接赋值thisRoutes会报错
       if (routes) {
         this.routes = JSON.parse(routes as string);

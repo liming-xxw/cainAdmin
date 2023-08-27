@@ -18,8 +18,14 @@ const loginFuc = async (values: userDto) => {
   const data = await loginApi(values);
   if (data?.status == 200) {
     roleStores.setRoutes(data.data.data.routes);
+    roleStores.setRole(JSON.parse(data.data.data.role));
+    roleStores.setUser({
+      username: data.data.data.username,
+      password: data.data.data.password,
+      emali: data.data.data.emali,
+      nickname: data.data.data.nickname,
+    });
     roleStores.setIsLogin(true);
-    console.log(JSON.parse(data.data.data.role));
     router.push("/");
   }
   loginLoading.value = false;

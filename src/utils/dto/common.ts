@@ -1,6 +1,7 @@
 export interface routers {
   path?: string;
   name?: string;
+  title?: string;
   icon?: string;
   component?: string;
   parent?: string;

@@ -23,11 +23,15 @@ mock.onPost("/user/login").reply((config: any): any => {
         name: "consoleIndex",
         component: "../pages/console/console.vue",
         parent: "appIndex",
+        path: "/",
         pageParent: "consoleHome",
+        title: "仪表台",
       },
       {
         icon: "DesktopOutlined",
         name: "consoleHome",
+        path: "/",
+        title: "控制台",
       },
     ];
     return [
