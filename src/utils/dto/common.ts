@@ -8,4 +8,10 @@ export interface routers {
   pageParent?: string;
   child?: routers[];
   isRouter?: boolean;
+  meta?: { title: string };
+}
+
+export interface TabsDto {
+  name: string;
+  path: string;
 }

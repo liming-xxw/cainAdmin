@@ -19,19 +19,40 @@ mock.onPost("/user/login").reply((config: any): any => {
         isRouter: true,
       },
       {
-        icon: "DesktopOutlined",
+        icon: "RadarChartOutlined",
         name: "consoleIndex",
         component: "../pages/console/console.vue",
         parent: "appIndex",
         path: "/",
         pageParent: "consoleHome",
         title: "仪表台",
+        meta: {
+          title: "仪表台",
+        },
       },
       {
         icon: "DesktopOutlined",
         name: "consoleHome",
         path: "/",
         title: "控制台",
+      },
+      {
+        icon: "FormOutlined",
+        name: "formHome",
+        path: "/form",
+        title: "表单系统",
+      },
+      {
+        icon: "TableOutlined",
+        name: "formIndex",
+        component: "../pages/form/index.vue",
+        parent: "appIndex",
+        path: "/form",
+        pageParent: "formHome",
+        title: "表格演示",
+        meta: {
+          title: "表格演示",
+        },
       },
     ];
     return [

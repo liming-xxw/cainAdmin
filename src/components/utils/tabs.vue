@@ -1,16 +1,53 @@
 <script setup lang="ts">
 import { Tabs, TabPane } from "ant-design-vue";
 import { RedoOutlined } from "@ant-design/icons-vue";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import { TabsDto } from "../../utils/dto/common";
+import { tabsStore } from "../../store/tabs";
+import { ref } from "vue";
+
+const tabsStores = tabsStore();
+const UseRoute = useRoute();
+const UseRouter = useRouter();
+const activeKey = ref<string>(UseRoute.path);
+
+onBeforeRouteUpdate((to) => {
+  const name = String(to.meta.title);
+  const path = to.path;
+  const is = tabsStores.tabs.filter((v: TabsDto) => {
+    return v.path === path;
+  });
+  if (is.length == 0) {
+    tabsStores.setTabs({ name: name, path: path });
+  }
+  activeKey.value = path;
+});
+
+const TabsChange = (key: any) => {
+  UseRouter.push(key);
+};
 </script>
 
 <template>
   <div style="height: 40px">
-    <Tabs type="editable-card" hide-add>
-      <TabPane key="1" tab="Tab 1">
-        <template #closeIcon><RedoOutlined /> </template>
+    <Tabs
+      v-model:activeKey="activeKey"
+      type="editable-card"
+      hide-add
+      @change="TabsChange"
+    >
+      <TabPane
+        v-for="tab in tabsStores.tabs"
+        :key="tab.path"
+        :closable="activeKey != tab.path"
+      >
+        <template #tab>
+          <span>
+            {{ tab.name }}
+            <RedoOutlined v-show="activeKey == tab.path" />
+          </span>
+        </template>
       </TabPane>
-      <TabPane key="2" tab="Tab 2"></TabPane>
-      <TabPane key="3" tab="Tab 3"></TabPane>
     </Tabs>
   </div>
 </template>

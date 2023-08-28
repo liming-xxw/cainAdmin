@@ -87,6 +87,17 @@ export const roleStore = defineStore("roleStore", {
         this.routes = JSON.parse(routes as string);
       }
     },
+    exit() {
+      this.isLogin = false;
+      this.user = {} as any;
+
+      this.role = [];
+      this.routes.forEach((v: routers) => {
+        routerjs.removeRoute(v.name as string);
+      });
+      this.routes = [];
+      this.slide = [];
+    },
   },
   persist: true,
 });

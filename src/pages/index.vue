@@ -9,33 +9,75 @@ import {
   LayoutContent,
   LayoutHeader,
   SubMenu,
+  Avatar,
+  Dropdown,
+  MenuDivider,
+  message,
 } from "ant-design-vue";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   DesktopOutlined,
+  RadarChartOutlined,
+  FormOutlined,
+  TableOutlined,
 } from "@ant-design/icons-vue";
 import { roleStore } from "../store/role";
-const selectedKeys = ref<string[]>(["控制台"]);
+import { useRoute, useRouter } from "vue-router";
+import { routers } from "../utils/dto/common";
+
 const collapsed = ref<boolean>(false);
 const roleStores = roleStore();
-console.log(roleStores.slide);
-
-const iconList = [DesktopOutlined];
+const userouter = useRouter();
+const useroute = useRoute();
+const iconList = [
+  DesktopOutlined,
+  RadarChartOutlined,
+  FormOutlined,
+  TableOutlined,
+];
+const selectedKeys = ref<string[]>(["/"]);
+const openKeys = ref<string[]>(["控制台"]);
+const silderOpen = () => {
+  roleStores.slide.forEach((v: routers) => {
+    if (v.child) {
+      v.child.forEach((j: routers) => {
+        if (j.path == useroute.path) {
+          selectedKeys.value[0] = j.path;
+          openKeys.value[0] = j.pageParent as string;
+        }
+      });
+    }
+  });
+};
 
 const getIcon = (icon: string): any => {
   const iconD = iconList.filter((v) => icon + "3" == v.name);
   return iconD[0];
 };
+
+// 退出登录方法
+const exit = () => {
+  roleStores.exit();
+  message.error("退出登录成功，非常感谢你的使用");
+  userouter.push("/login");
+};
+
+silderOpen();
 </script>
 
 <template>
   <Layout style="height: 100vh">
     <LayoutSider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo" />
-      <Menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+      <Menu
+        v-model:selectedKeys="selectedKeys"
+        v-model:openKeys="openKeys"
+        theme="dark"
+        mode="inline"
+      >
         <template v-for="item in roleStores.slide">
-          <SubMenu v-if="item.child" :key="item.title">
+          <SubMenu v-if="item.child" :key="item.name">
             <template #title>
               <span>
                 <component :is="getIcon(item.icon as any)"></component>
@@ -43,12 +85,20 @@ const getIcon = (icon: string): any => {
                 <span>{{ item.title }}</span>
               </span>
             </template>
-            <MenuItem v-for="citem in item.child" key="3">
+            <MenuItem
+              v-for="citem in item.child"
+              :key="item.path"
+              @click="$router.push(item.path as string)"
+            >
               <component :is="getIcon(item.icon as any)"></component>
               <span>{{ citem.title }}</span>
             </MenuItem>
           </SubMenu>
-          <MenuItem v-else>
+          <MenuItem
+            v-else
+            :key="item.path"
+            @click="$router.push(item.path as string)"
+          >
             <span>{{ item.title }}</span>
           </MenuItem>
         </template>
@@ -56,18 +106,35 @@ const getIcon = (icon: string): any => {
     </LayoutSider>
     <Layout>
       <LayoutHeader style="background: #fff; padding: 0">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined
-          v-else
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
+        <div style="display: flex; justify-content: space-between">
+          <div>
+            <menu-unfold-outlined
+              v-if="collapsed"
+              class="trigger"
+              @click="() => (collapsed = !collapsed)"
+            />
+            <menu-fold-outlined
+              v-else
+              class="trigger"
+              @click="() => (collapsed = !collapsed)"
+            />
+          </div>
+          <div style="padding-right: 20px">
+            <Dropdown>
+              <Avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" />
+
+              <template #overlay>
+                <Menu>
+                  <MenuItem> 用户名称:{{ roleStores.user.nickname }} </MenuItem>
+                  <MenuDivider />
+                  <MenuItem @click="exit()"> 退出登录 </MenuItem>
+                </Menu>
+              </template>
+            </Dropdown>
+          </div>
+        </div>
       </LayoutHeader>
-      <div style="box-sizing: border-box;padding: 20px;">
+      <div style="box-sizing: border-box; padding: 20px">
         <tabVue></tabVue>
         <LayoutContent
           :style="{
