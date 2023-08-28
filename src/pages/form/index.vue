@@ -9,13 +9,11 @@ import {
   Modal,
   Form,
   FormItem,
-  Checkbox,
-  InputPassword,
   RadioGroup,
   Radio,
   message,
 } from "ant-design-vue";
-import { reactive, ref, toRaw } from "vue";
+import { reactive, ref } from "vue";
 const columns = [
   {
     title: "ID",
@@ -87,7 +85,7 @@ const createFuc = () => {
       message.success("新增成功");
       createModel.value = false;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.log(error);
     });
 };
@@ -110,15 +108,10 @@ const deleteFuc = (index: number) => {
         <Col span="6">
           <Input />
         </Col>
-        <Col span="6">
+        <Col span="6" style="display: flex; gap: 10px">
           <Button type="primary">确认查询</Button>
-          <Button type="primary" danger style="margin-left: 10px">清空</Button>
-          <Button
-            type="primary"
-            style="margin-left: 10px"
-            @click="createModel = true"
-            >新增</Button
-          >
+          <Button type="primary" danger>清空</Button>
+          <Button type="primary" @click="createModel = true">新增</Button>
           <Modal
             v-model:open="createModel"
             title="新增狗狗"
@@ -179,7 +172,7 @@ const deleteFuc = (index: number) => {
     </div>
     <div style="margin-top: 20px">
       <Table :columns="columns" :data-source="data">
-        <template #bodyCell="{ column, record, index }">
+        <template #bodyCell="{ column, index }">
           <template v-if="column.key === 'action'">
             <span>
               <a>编辑</a>

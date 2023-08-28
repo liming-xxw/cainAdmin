@@ -14,6 +14,9 @@ export const tabsStore = defineStore("tabsStore", {
     setTabs(tabs: TabsDto) {
       this.tabs.push(tabs);
     },
+    updateTabs(key: string) {
+      this.tabs = this.tabs.filter((v: TabsDto) => v.path !== key);
+    },
   },
   persist: true,
 });

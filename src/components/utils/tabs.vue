@@ -26,6 +26,29 @@ onBeforeRouteUpdate((to) => {
 const TabsChange = (key: any) => {
   UseRouter.push(key);
 };
+
+//  删除tab方法
+const remove = (key: string) => {
+  const i = tabsStores.tabs.findIndex((x: TabsDto) => x.path == key);
+  if (i != -1) {
+    tabsStores.updateTabs(key);
+    if (tabsStores.tabs.length && activeKey.value === key) {
+      UseRouter.push(tabsStores.tabs[i - 1].path);
+      if (i - 1 >= 0) {
+        activeKey.value = tabsStores.tabs[i - 1].path;
+      } else {
+        activeKey.value = tabsStores.tabs[0].path;
+      }
+    }
+  }
+};
+
+const TagsEdit = (targetKey: any, action: any) => {
+  if (action == "remove") {
+    remove(targetKey);
+  } else if (action == "refresh") {
+  }
+};
 </script>
 
 <template>
@@ -35,6 +58,7 @@ const TabsChange = (key: any) => {
       type="editable-card"
       hide-add
       @change="TabsChange"
+      @edit="TagsEdit"
     >
       <TabPane
         v-for="tab in tabsStores.tabs"
@@ -44,7 +68,10 @@ const TabsChange = (key: any) => {
         <template #tab>
           <span>
             {{ tab.name }}
-            <RedoOutlined v-show="activeKey == tab.path" />
+            <RedoOutlined
+              v-show="activeKey == tab.path"
+              @click="$router.go(0)"
+            />
           </span>
         </template>
       </TabPane>

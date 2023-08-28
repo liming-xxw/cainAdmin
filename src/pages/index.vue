@@ -21,6 +21,8 @@ import {
   RadarChartOutlined,
   FormOutlined,
   TableOutlined,
+  DeploymentUnitOutlined,
+  NodeIndexOutlined,
 } from "@ant-design/icons-vue";
 import { roleStore } from "../store/role";
 import { useRoute, useRouter } from "vue-router";
@@ -35,6 +37,8 @@ const iconList = [
   RadarChartOutlined,
   FormOutlined,
   TableOutlined,
+  DeploymentUnitOutlined,
+  NodeIndexOutlined,
 ];
 const selectedKeys = ref<string[]>(["/"]);
 const openKeys = ref<string[]>(["控制台"]);

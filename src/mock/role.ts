@@ -54,6 +54,24 @@ mock.onPost("/user/login").reply((config: any): any => {
           title: "表格演示",
         },
       },
+      {
+        icon: "DeploymentUnitOutlined",
+        name: "roleHome",
+        path: "/role",
+        title: "权限系统",
+      },
+      {
+        icon: "NodeIndexOutlined",
+        name: "roleIndex",
+        component: "../pages/role/index.vue",
+        parent: "appIndex",
+        path: "/role",
+        pageParent: "roleHome",
+        title: "管理员权限管理",
+        meta: {
+          title: "管理员权限管理",
+        },
+      },
     ];
     return [
       200,
