@@ -5,4 +5,11 @@ import router from "./router/index";
 import { createPinia } from "pinia";
 import piniaPlugins from "pinia-plugin-persistedstate";
 import "./mock/role";
-createApp(App).use(router).use(createPinia().use(piniaPlugins)).mount("#app");
+
+const AppUse = createApp(App);
+
+AppUse.use(router).use(createPinia().use(piniaPlugins)).mount("#app");
+
+export {
+    AppUse
+}

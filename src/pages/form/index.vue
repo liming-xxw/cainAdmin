@@ -111,7 +111,7 @@ const deleteFuc = (index: number) => {
         <Col span="6" style="display: flex; gap: 10px">
           <Button type="primary">确认查询</Button>
           <Button type="primary" danger>清空</Button>
-          <Button type="primary" @click="createModel = true">新增</Button>
+          <Button type="primary" @click="createModel = true" v-add>新增</Button>
           <Modal
             v-model:open="createModel"
             title="新增狗狗"
@@ -175,9 +175,9 @@ const deleteFuc = (index: number) => {
         <template #bodyCell="{ column, index }">
           <template v-if="column.key === 'action'">
             <span>
-              <a>编辑</a>
+              <a v-update>编辑</a>
               <Divider type="vertical" />
-              <a @click="deleteFuc(index)">删除</a>
+              <a @click="deleteFuc(index)" v-delete>删除</a>
             </span>
           </template>
         </template>
